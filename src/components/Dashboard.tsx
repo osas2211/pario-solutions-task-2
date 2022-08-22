@@ -35,7 +35,7 @@ export const Dashboard = () => {
       },
       title: {
         display: true,
-        text: `${state.state} State Bar Chart`,
+        text: `${state?.state} State Bar Chart`,
       },
     },
   };
@@ -55,10 +55,21 @@ export const Dashboard = () => {
   };
   return (
     <>
-      <div style={{marginTop: "2rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
-        <TextField value={input} onChange={(e) => setInput(e.target.value)} placeholder="Enter state"/>
+      <div
+        style={{
+          marginTop: "2rem",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <TextField
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Enter state"
+        />
         <Button
-        style={{marginLeft: 5}}
+          style={{ marginLeft: 5 }}
           variant="contained"
           onClick={() =>
             dispatch({ type: getCountryState.type, payload: input })
@@ -67,8 +78,22 @@ export const Dashboard = () => {
           Search
         </Button>
       </div>
-
-      <Bar options={options} data={data} />
+      {state.state !== undefined ? (
+        <>
+          <Bar options={options} data={data} />
+        </>
+      ) : (
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: "2rem",
+            marginTop: "2rem",
+            opacity: "0.6",
+          }}
+        >
+          Search for a state.
+        </p>
+      )}
     </>
   );
 };
