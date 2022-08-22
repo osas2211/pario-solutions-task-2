@@ -3,12 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import App from './App';
-import axios from 'axios';
-
-axios.get("https://covidnigeria.herokuapp.com/api")
-  .then(response => {
-    window.sessionStorage.setItem("covidData", JSON.stringify(response.data.data))
-});
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
