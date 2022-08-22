@@ -1,13 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const data = JSON.parse(window.sessionStorage.getItem("covidData") as string);
+
 export const covidNigeriaSlice = createSlice({
   name: "covidNigeria",
-  initialState: JSON.parse(
-    window.sessionStorage.getItem("covidData") as string
-  ),
+  initialState: data.states.filter((state: any) => state.state == "Kogi")[0],
   reducers: {
     getCountryState: (state, action) => {
-      return action.payload;
+      const countryState = data.states.filter(
+        (state: any) =>
+          state.state.toUpperCase() == action.payload.toUpperCase()
+      )[0];
+      return countryState;
     },
   },
 });
