@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getCountryState } from "../redux/covidNigeriaSlice";
+import { fetchData } from "../redux/covidNigeriaSlice";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,7 +24,9 @@ ChartJS.register(
 );
 
 export const Dashboard = () => {
-  const state = useSelector((state: RootState) => state.covidNigeria);
+  const { loading, entities } = useSelector(
+    (state: RootState) => state.covidNigeria
+  );
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
   const options = {
@@ -35,14 +37,14 @@ export const Dashboard = () => {
       },
       title: {
         display: true,
-        text: `${state?.state} State Bar Chart`,
+        text: `${entities?.state} State Bar Chart`,
       },
     },
   };
 
   const labels = ["casesOnAdmission", "confirmedCases", "death", "discharged"];
 
-  const { casesOnAdmission, confirmedCases, death, discharged } = state;
+  const { casesOnAdmission, confirmedCases, death, discharged } = entities;
   const data = {
     labels,
     datasets: [
@@ -71,14 +73,14 @@ export const Dashboard = () => {
         <Button
           style={{ marginLeft: 5 }}
           variant="contained"
-          onClick={() =>
-            dispatch({ type: getCountryState.type, payload: input })
-          }
+          onClick={() => {
+            dispatch(fetchData(input) as any);
+          }}
         >
           Search
         </Button>
       </div>
-      {state.state !== undefined ? (
+      {entities.state !== undefined ? (
         <>
           <Bar options={options} data={data} />
         </>
@@ -91,7 +93,7 @@ export const Dashboard = () => {
             opacity: "0.6",
           }}
         >
-          Search for a state.
+          {loading === true ? "searching..." : "Search for a state."}
         </p>
       )}
     </>
