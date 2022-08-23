@@ -93,7 +93,7 @@ export const Dashboard = () => {
             opacity: "0.6",
           }}
         >
-          {loading === true ? "searching..." : "Search for a state."}
+          {loading === true ? "searching..." : "Search for a state in Nigeria."}
         </p>
       )}
     </>

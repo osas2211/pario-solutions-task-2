@@ -9,9 +9,12 @@ export const fetchData = createAsyncThunk(
   async (input: string, thunkAPI) => {
     const response = await axios.get("https://covidnigeria.herokuapp.com/api");
     const data = await response.data;
-    return data.data.states.filter(
-      (state: any) => state.state.toUpperCase() == input.toUpperCase()
+    const state = data.data.states.filter(
+      (state: any) =>
+        state.state.toUpperCase() == input.split(" ").join("").toUpperCase()
     )[0];
+    if (state !== undefined) return state;
+    else return {};
   }
 );
 
@@ -22,6 +25,7 @@ export const covidNigeriaSlice = createSlice({
   extraReducers: {
     [fetchData.pending as any]: (state: any) => {
       state.loading = true;
+      state.entities = {};
     },
 
     [fetchData.fulfilled as any]: (state: any, { payload }) => {
@@ -31,6 +35,7 @@ export const covidNigeriaSlice = createSlice({
 
     [fetchData.rejected as any]: (state: any) => {
       state.loading = false;
+      state.entities = {};
     },
   },
 });
